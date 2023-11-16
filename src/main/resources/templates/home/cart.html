@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home/index::head">
+</head>
+<body>
+<div th:replace="home/index::header_home"></div>
+<div style="height: 150px;"></div>
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Products</a></li>
+            <li class="breadcrumb-item active">Cart</li>
+        </ul>
+    </div>
+</div>
+
+<div class="cart-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-page-inner">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                            <tr th:each="cartITem:${cartItems}" class="list_cartItem">
+                                <td>
+                                    <div class="img">
+                                        <a href="#"><img
+                                                th:src="${cartITem.getProductResponse().getImage_url()}"
+                                                alt="Image"></a>
+                                        <p th:text="${cartITem.getProductResponse().name}"></p>
+                                    </div>
+                                </td>
+                                <td th:text="${cartITem.getProductResponse().getCostPrice()}"></td>
+                                <td>
+                                    <div class="qtyincart">
+                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                        <input type="text" th:value="${cartITem.getQuantity()}" class="valuequantity">
+                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                        <input type="hidden" th:value="${cartITem.id}" class="cartIdInCard"/>
+                                    </div>
+                                </td>
+                                <td th:id="totalmaney+${cartITem.getId()}" th:class="totalmaney">
+                                    [[${cartITem.totalInCartItem()}]]
+                                </td>
+                                <td class="td_removecard">
+                                    <button class="btn_removecart"><i class="fa fa-trash"></i>
+                                        <input type="hidden" th:value="${cartITem.getId()}" id="cartIdInCardFirst"/>
+                                    </button>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="coupon">
+                                <input type="text" placeholder="Coupon Code">
+                                <button>Apply Code</button>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="cart-summary">
+                                <div class="cart-content">
+                                    <h2>Total<span class="grandtotalcart">$100</span></h2>
+                                </div>
+                                <div class="cart-btn">
+                                    <button onclick="buy_product()">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+
+<!-- Footer Start -->
+<!--<div class="footer">-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="footer-widget">-->
+<!--                    <h2>Get in Touch</h2>-->
+<!--                    <div class="contact-info">-->
+<!--                        <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>-->
+<!--                        <p><i class="fa fa-envelope"></i>email@example.com</p>-->
+<!--                        <p><i class="fa fa-phone"></i>+123-456-7890</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="footer-widget">-->
+<!--                    <h2>Follow Us</h2>-->
+<!--                    <div class="contact-info">-->
+<!--                        <div class="social">-->
+<!--                            <a href=""><i class="fab fa-twitter"></i></a>-->
+<!--                            <a href=""><i class="fab fa-facebook-f"></i></a>-->
+<!--                            <a href=""><i class="fab fa-linkedin-in"></i></a>-->
+<!--                            <a href=""><i class="fab fa-instagram"></i></a>-->
+<!--                            <a href=""><i class="fab fa-youtube"></i></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="footer-widget">-->
+<!--                    <h2>Company Info</h2>-->
+<!--                    <ul>-->
+<!--                        <li><a href="#">About Us</a></li>-->
+<!--                        <li><a href="#">Privacy Policy</a></li>-->
+<!--                        <li><a href="#">Terms & Condition</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="footer-widget">-->
+<!--                    <h2>Purchase Info</h2>-->
+<!--                    <ul>-->
+<!--                        <li><a href="#">Pyament Policy</a></li>-->
+<!--                        <li><a href="#">Shipping Policy</a></li>-->
+<!--                        <li><a href="#">Return Policy</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="row payment align-items-center">-->
+<!--            <div class="col-md-6">-->
+<!--                <div class="payment-method">-->
+<!--                    <h2>We Accept:</h2>-->
+<!--                    <img th:src="@{/images/payment-method.png}" alt="Payment Method"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <div class="payment-security">-->
+<!--                    <h2>Secured By:</h2>-->
+<!--                    <img th:src="@{/images/godaddy.svg}" alt="Payment Security"/>-->
+<!--                    <img th:src="@{/images/norton.svg}" alt="Payment Security"/>-->
+<!--                    <img th:src="@{/images/ssl.svg}" alt="Payment Security"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Footer End -->
+
+<!-- Footer Bottom Start -->
+<!--<div class="footer-bottom">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6 copyright">-->
+<!--                <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-6 template-by">-->
+<!--                <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Footer Bottom End -->
+
+<!-- Back to Top -->
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/slick/slick.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="/images/main.js"></script>
+</body>
+<script th:inline="javascript">
+    sumTotal();
+
+    $('.qtyincart button').on('click', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').eq(0).val();
+        if ($button.hasClass('btn-plus')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            if (oldValue > 0) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 0;
+            }
+        }
+        $button.parent().find('input').eq(0).val(newVal);
+        var cardId = $button.parent().find('.cartIdInCard').val();
+        var url = "/api/shoppingcarts/update/" + cardId + "/" + newVal;
+
+        $.ajax({
+                type: "POST",
+                url: url,
+                success: function (res) {
+                    var classcart = "#totalmaney" + cardId;
+                    if (res != null) {
+                        $(classcart).text(res)
+                    }
+                    sumTotal()
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown)
+                }
+            }
+        )
+    });
+
+    function sumTotal() {
+        var total = 0;
+        var numbercart=0;
+        $(".totalmaney").each(function (index, element) {
+            total += parseFloat(element.innerHTML)
+            numbercart++
+        })
+        chageFragment(numbercart)
+        changeNumberCart(numbercart)
+        numbercart=0;
+        $(".grandtotalcart").text(total)
+    }
+
+    $(".td_removecard").click(function (e) {
+        var card=$(this).parent();
+        var cartId = $(this).find("#cartIdInCardFirst").val();
+        var url="/api/shoppingcarts/delete/"+cartId;
+        $.ajax({
+            type: "DELETE",
+            url:url,
+            success:function (res){
+                card.remove()
+                sumTotal()
+            },
+            error:function (xhr,status,error){
+                console.log("err",cartId)
+        }
+        })
+    })
+    function buy_product(){
+        var userId = ''
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith('userId=')) {
+                userId = cookie.substring('userId='.length, cookie.length);
+                break;
+            }
+        }
+        var url="/api/history/add/"+userId;
+        $.ajax({
+            type:"POST",
+            url:url,
+            success:function (res){
+                console.log(res);
+                if(res=="add fail"){
+
+                }else{
+                    removeAll_list_cartItem()
+                }
+            },
+            error:function (xhr,status,error){
+
+            }
+        })
+    }
+    function removeAll_list_cartItem(){
+        document.querySelectorAll(".list_cartItem").forEach((item)=>{
+            item.remove();
+        });
+    }
+    getUserNameFromCookie()
+</script>
+</html>
